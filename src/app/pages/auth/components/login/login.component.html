@@ -1,0 +1,42 @@
+<form class="login-form" [formGroup]="loginForm()!" (ngSubmit)="login()">
+  <h2 class="form-title">Login</h2>
+  <div class="form-group w-full mt-5">
+    <label for="email">Email</label>
+    <input
+      type="email"
+      id="email"
+      formControlName="email"
+      pInputText
+      class="w-full mt-2"
+    />
+  </div>
+  <div class="form-group w-full mt-5">
+    <label for="password">Password</label>
+    <p-iconfield class="w-full mt-2">
+      <input
+        #inputPassword
+        type="password"
+        pInputText
+        formControlName="password"
+        class="w-full"
+      />
+      <p-inputicon
+        [styleClass]="!showPassword() ? 'pi pi-eye' : 'pi pi-eye-slash'"
+        (click)="togglePassword()"
+      />
+    </p-iconfield>
+  </div>
+  <button
+    type="submit"
+    pButton
+    class="login-button mt-5"
+    [disabled]="loginForm()?.invalid"
+  >
+    Login
+  </button>
+  <div class="register mt-5">
+    <div class="text">
+      Need to create an account? <u (click)="changePageMode()">Sign Up</u>
+    </div>
+  </div>
+</form>

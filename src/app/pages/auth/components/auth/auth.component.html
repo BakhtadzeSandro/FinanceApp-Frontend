@@ -1,0 +1,19 @@
+<div class="login-container">
+  <div class="picture">
+    <img src="/assets/images/auth-side.png" alt="Login Illustration" />
+  </div>
+
+  <div class="form-container">
+    @if (isLoggingIn()) {
+    <app-login
+      class="form-container"
+      (pageMode)="pageModeHandler($event)"
+    ></app-login>
+    } @else{
+    <app-register
+      class="form-container"
+      (pageMode)="pageModeHandler($event)"
+    ></app-register>
+    }
+  </div>
+</div>

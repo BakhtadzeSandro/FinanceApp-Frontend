@@ -1,0 +1,45 @@
+@use "variables" as vars;
+
+.register-form {
+  width: 100%;
+  background-color: vars.$color-white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .form-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .form-group {
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: vars.$color-label;
+    }
+  }
+
+  .register-button {
+    background-color: vars.$color-button-background;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .login {
+    text-align: center;
+    .text {
+      color: vars.$color-label;
+      u {
+        color: vars.$color-button-background;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    }
+  }
+}
