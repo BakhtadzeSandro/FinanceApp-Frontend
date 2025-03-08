@@ -7,6 +7,15 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { LoginComponent, RegisterComponent } from '../index';
+import { HttpClient } from '@angular/common/http';
+import {
+  BehaviorSubject,
+  catchError,
+  Observable,
+  ReplaySubject,
+  Subject,
+  throwError,
+} from 'rxjs';
 
 @Component({
   selector: 'app-auth',
@@ -35,4 +44,6 @@ export class AuthComponent {
   }
 
   login() {}
+
+  ngOnInit() {}
 }

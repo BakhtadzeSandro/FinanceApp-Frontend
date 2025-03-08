@@ -1,11 +1,11 @@
 <form class="login-form" [formGroup]="loginForm()!" (ngSubmit)="login()">
   <h2 class="form-title">Login</h2>
   <div class="form-group w-full mt-5">
-    <label for="email">Email</label>
+    <label for="email">Username</label>
     <input
       type="email"
       id="email"
-      formControlName="email"
+      formControlName="username"
       pInputText
       class="w-full mt-2"
     />

@@ -15,7 +15,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { LoginForm, PageMode } from '../../auth.model';
+import { LoginForm, LoginPayload, PageMode } from '../../auth.model';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -23,6 +23,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { IconField } from 'primeng/iconfield';
 import { ButtonModule } from 'primeng/button';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -46,6 +47,7 @@ export class LoginComponent implements OnInit {
   loginForm = signal<FormGroup<LoginForm> | undefined>(undefined);
 
   fb = inject(FormBuilder);
+  authService = inject(AuthService);
 
   showPassword = signal<boolean>(false);
 
@@ -56,7 +58,7 @@ export class LoginComponent implements OnInit {
   private buildForm() {
     const fb = this.fb.nonNullable;
     const form = new FormGroup<LoginForm>({
-      email: fb.control(undefined, [Validators.required, Validators.email]),
+      username: fb.control(undefined, Validators.required),
       password: fb.control(undefined, Validators.required),
     });
     this.loginForm.set(form);
@@ -73,7 +75,10 @@ export class LoginComponent implements OnInit {
     if (this.loginForm()?.invalid) {
       return;
     }
-    console.log(this.loginForm()?.value);
+
+    this.authService
+      .login(this.loginForm()?.value as LoginPayload)
+      .subscribe((res) => localStorage.setItem('token', res['access_token']));
   }
 
   changePageMode() {

@@ -13,13 +13,20 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { PageMode, LoginForm, RegisterForm } from '../../auth.model';
+import {
+  PageMode,
+  LoginForm,
+  RegisterForm,
+  RegisterPayload,
+} from '../../auth.model';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule, IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
+import { AuthService } from '../../../../services/auth.service';
+import { finalize, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -39,10 +46,12 @@ import { PasswordModule } from 'primeng/password';
   standalone: true,
 })
 export class RegisterComponent {
+  destroy$ = new Subject<void>();
   pageMode = output<PageMode>();
   registerForm = signal<FormGroup<RegisterForm> | undefined>(undefined);
 
-  fb = inject(FormBuilder);
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
 
   showPassword = signal<boolean>(false);
 
@@ -53,7 +62,9 @@ export class RegisterComponent {
   private buildForm() {
     const fb = this.fb.nonNullable;
     const form = new FormGroup<RegisterForm>({
-      name: fb.control(undefined, [Validators.required]),
+      firstName: fb.control(undefined, Validators.required),
+      lastName: fb.control(undefined, Validators.required),
+      username: fb.control(undefined, Validators.required),
       email: fb.control(undefined, [Validators.required, Validators.email]),
       password: fb.control(undefined, Validators.required),
     });
@@ -71,7 +82,15 @@ export class RegisterComponent {
     if (this.registerForm()?.invalid) {
       return;
     }
-    console.log(this.registerForm()?.value);
+
+    const payload = this.registerForm()?.value;
+    this.authService
+      .registerUser(payload as RegisterPayload)
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => this.pageMode.emit(PageMode.LOGIN))
+      )
+      .subscribe();
   }
 
   changePageMode() {
@@ -80,5 +99,10 @@ export class RegisterComponent {
 
   ngOnInit() {
     this.buildForm();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
