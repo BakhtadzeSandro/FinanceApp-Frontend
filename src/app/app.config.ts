@@ -26,5 +26,6 @@ export const appConfig: ApplicationConfig = {
         preset: Aura,
       },
     }),
+    provideAnimationsAsync('noop'),
   ],
 };

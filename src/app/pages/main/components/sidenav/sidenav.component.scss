@@ -1,0 +1,120 @@
+@use "variables" as vars;
+
+.sidenav {
+  width: 16rem;
+  background-color: vars.$color-sidebar-background;
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: width 0.3s ease-in-out;
+  overflow: hidden;
+  padding-bottom: 2rem;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+
+  nav {
+    .list {
+      margin-top: 50px;
+    }
+    .title {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 24px;
+    }
+  }
+
+  &.collapsed {
+    width: 4rem;
+
+    .title img,
+    .nav-item span,
+    .minimize .text {
+      opacity: 0;
+      width: 0;
+      transition: opacity 0.2s ease-in-out, width 0.2s ease-in-out;
+    }
+
+    .minimize {
+      justify-content: center;
+
+      i {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &:not(.collapsed) {
+    .title img,
+    .nav-item span,
+    .minimize .text {
+      opacity: 1;
+      width: auto;
+      transition: opacity 0.2s ease-in-out, width 0.2s ease-in-out;
+      transition-delay: 0.2s;
+    }
+  }
+
+  nav {
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-grow: 1; // Pushes minimize button up
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        i {
+          font-size: 1.2rem;
+        }
+
+        span {
+          white-space: nowrap;
+          overflow: hidden;
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  .minimize {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.2s, color 0.2s;
+    margin-bottom: 2rem; // Moves it up from bottom
+
+    i {
+      transition: transform 0.3s ease-in-out;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #a1a1a1;
+    }
+
+    .text {
+      white-space: nowrap;
+      overflow: hidden;
+      display: inline-block;
+    }
+  }
+}

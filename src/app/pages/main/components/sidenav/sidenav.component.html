@@ -1,0 +1,24 @@
+<div class="sidenav" [class.collapsed]="isCollapsed">
+  <nav>
+    <div class="title">
+      @if (!isCollapsed) {
+      <img src="/assets/images/finance.png" />
+      } @else {
+      <i class="pi pi-money-bill mr-2"></i>
+      }
+    </div>
+    <ul class="list">
+      @for (item of sidenavItems(); track $index) {
+      <li class="nav-item" (click)="navigate(item.route)">
+        <i [class]="item.icon"></i>
+        <span>{{ item.label }}</span>
+      </li>
+      }
+    </ul>
+  </nav>
+
+  <div class="minimize" (click)="toggleSidenav()">
+    <i class="pi pi-angle-left"></i>
+    <span class="text">Minimize Menu</span>
+  </div>
+</div>

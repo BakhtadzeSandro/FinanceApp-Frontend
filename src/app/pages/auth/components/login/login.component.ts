@@ -24,6 +24,7 @@ import { InputIcon } from 'primeng/inputicon';
 import { IconField } from 'primeng/iconfield';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../../../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -46,8 +47,9 @@ export class LoginComponent implements OnInit {
   pageMode = output<PageMode>();
   loginForm = signal<FormGroup<LoginForm> | undefined>(undefined);
 
-  fb = inject(FormBuilder);
-  authService = inject(AuthService);
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   showPassword = signal<boolean>(false);
 
@@ -76,9 +78,15 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.authService
-      .login(this.loginForm()?.value as LoginPayload)
-      .subscribe((res) => localStorage.setItem('token', res['access_token']));
+    this.authService.login(this.loginForm()?.value as LoginPayload).subscribe({
+      next: (res) => this.handleLogin(res['access_token']),
+      error: (err) => console.log(err),
+    });
+  }
+
+  handleLogin(token: string) {
+    localStorage.setItem('token', token);
+    this.router.navigate(['overview']);
   }
 
   changePageMode() {
