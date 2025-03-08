@@ -9,7 +9,11 @@
     </div>
     <ul class="list">
       @for (item of sidenavItems(); track $index) {
-      <li class="nav-item" (click)="navigate(item.route)">
+      <li
+        class="nav-item"
+        [class.active]="selectedPage() === item.route"
+        (click)="navigate(item.route)"
+      >
         <i [class]="item.icon"></i>
         <span>{{ item.label }}</span>
       </li>

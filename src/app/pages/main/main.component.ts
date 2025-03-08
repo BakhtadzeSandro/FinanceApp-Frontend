@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { RouterModule } from '@angular/router';
-import { SidenavItem } from '../../models/sidebar.model';
+import { SidebarItemRoute, SidenavItem } from '../../models/sidebar.model';
 
 @Component({
   selector: 'app-main',
@@ -11,33 +11,36 @@ import { SidenavItem } from '../../models/sidebar.model';
   imports: [SidenavComponent, RouterModule],
 })
 export class MainComponent implements OnInit {
+  selectedPage = signal<SidebarItemRoute>(SidebarItemRoute.OVERVIEW);
+
   sidenavItems = signal<SidenavItem[]>([
     {
       icon: 'pi pi-home',
       label: 'Overview',
-      route: 'overview',
+      route: SidebarItemRoute.OVERVIEW,
     },
     {
       icon: 'pi pi-wallet',
       label: 'Transactions',
-      route: 'transactions',
+      route: SidebarItemRoute.TRANSACTIONS,
     },
     {
       icon: 'pi pi-chart-bar',
       label: 'Budgets',
-      route: 'budgets',
+      route: SidebarItemRoute.BUDGETS,
     },
     {
       icon: 'pi pi-inbox',
       label: 'Pots',
-      route: 'pots',
+      route: SidebarItemRoute.POTS,
     },
     {
       icon: 'pi pi-calendar',
       label: 'Recurring Bills',
-      route: 'recurring-bills',
+      route: SidebarItemRoute.RECURRING_BILLS,
     },
   ]);
+
   constructor() {}
 
   ngOnInit() {}

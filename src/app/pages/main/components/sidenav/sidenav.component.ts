@@ -4,9 +4,13 @@ import {
   Component,
   inject,
   input,
+  model,
   OnInit,
 } from '@angular/core';
-import { SidenavItem } from '../../../../models/sidebar.model';
+import {
+  SidebarItemRoute,
+  SidenavItem,
+} from '../../../../models/sidebar.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,6 +26,8 @@ export class SidenavComponent implements OnInit {
 
   isCollapsed = false;
 
+  selectedPage = model<SidebarItemRoute>();
+
   private router = inject(Router);
 
   constructor() {}
@@ -30,7 +36,8 @@ export class SidenavComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  navigate(route: string) {
+  navigate(route: SidebarItemRoute) {
+    this.selectedPage.set(route);
     this.router.navigate([route]);
   }
 

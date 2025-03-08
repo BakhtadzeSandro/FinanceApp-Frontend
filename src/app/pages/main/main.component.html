@@ -1,6 +1,9 @@
 <div class="main-container">
   <div class="sidenav">
-    <app-sidenav [sidenavItems]="sidenavItems()"></app-sidenav>
+    <app-sidenav
+      [sidenavItems]="sidenavItems()"
+      [(selectedPage)]="selectedPage"
+    ></app-sidenav>
   </div>
   <div class="content">
     <router-outlet></router-outlet>

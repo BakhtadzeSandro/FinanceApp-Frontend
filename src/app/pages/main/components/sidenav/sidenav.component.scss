@@ -61,7 +61,7 @@
       list-style: none;
       padding: 0;
       margin: 0;
-      flex-grow: 1; // Pushes minimize button up
+      flex-grow: 1;
 
       .nav-item {
         display: flex;
@@ -69,10 +69,19 @@
         gap: 1rem;
         padding: 1rem;
         cursor: pointer;
-        transition: background 0.2s;
+        transition: background 0.2s, color 0.2s;
+        border-radius: 6px;
 
         &:hover {
           background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        &.active {
+          background-color: white;
+          color: black;
+          font-weight: bold;
+          border-left: 4px solid #008060;
+          border-radius: 0 8px 8px 0;
         }
 
         i {
@@ -100,7 +109,7 @@
     font-size: 1rem;
     font-weight: bold;
     transition: background 0.2s, color 0.2s;
-    margin-bottom: 2rem; // Moves it up from bottom
+    margin-bottom: 2rem;
 
     i {
       transition: transform 0.3s ease-in-out;
