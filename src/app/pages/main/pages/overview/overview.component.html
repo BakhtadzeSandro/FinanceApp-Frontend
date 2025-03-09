@@ -1,3 +1,13 @@
-<p>
-  overview works!
-</p>
+<div class="overview-container">
+  <div class="title">Overview</div>
+  <div class="money-cards">
+    @for (item of moneyCards(); track $index) {
+    <app-money-card
+      class="money-card"
+      [label]="item.label"
+      [quantity]="item.quantity"
+      [isMain]="item.isMain"
+    ></app-money-card>
+    }
+  </div>
+</div>

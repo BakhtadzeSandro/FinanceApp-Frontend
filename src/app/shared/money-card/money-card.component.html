@@ -1,1 +1,6 @@
-<p>money-card works!</p>
+<div class="money-card" [ngClass]="getCardClass()">
+  <div class="label">
+    {{ label() }}
+  </div>
+  <div class="quantity">${{ quantity() }}</div>
+</div>

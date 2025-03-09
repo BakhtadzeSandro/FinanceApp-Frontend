@@ -1,0 +1,25 @@
+.overview-container {
+  .title {
+    font-size: 30px;
+    font-weight: bold;
+  }
+  .money-cards {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    gap: 20px;
+    .money-card {
+      flex-grow: 1;
+      flex-basis: 0;
+      margin: 0 10px;
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}

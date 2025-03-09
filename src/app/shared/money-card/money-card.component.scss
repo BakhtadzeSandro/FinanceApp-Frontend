@@ -1,0 +1,35 @@
+@use "variables" as vars;
+
+.money-card {
+  padding: 30px 40px;
+  border-radius: 8px;
+}
+
+.main-card {
+  background-color: vars.$color-button-background;
+  color: vars.$color-white;
+  .label {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .quantity {
+    margin-top: 30px;
+    font-size: 36px;
+    font-weight: 500;
+  }
+}
+
+.default-card {
+  background-color: vars.$color-white;
+  .label {
+    color: vars.$color-label;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .quantity {
+    margin-top: 30px;
+    font-size: 36px;
+    color: vars.$color-button-background;
+    font-weight: 500;
+  }
+}
