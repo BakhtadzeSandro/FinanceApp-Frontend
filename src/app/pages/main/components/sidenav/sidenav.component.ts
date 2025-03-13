@@ -12,6 +12,7 @@ import {
   SidenavItem,
 } from '../../../../models/sidebar.model';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -29,6 +30,7 @@ export class SidenavComponent implements OnInit {
   selectedPage = model<SidebarItemRoute>();
 
   private router = inject(Router);
+  private authService = inject(AuthService);
 
   constructor() {}
 
@@ -39,6 +41,10 @@ export class SidenavComponent implements OnInit {
   navigate(route: SidebarItemRoute) {
     this.selectedPage.set(route);
     this.router.navigate([route]);
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
   ngOnInit() {}
