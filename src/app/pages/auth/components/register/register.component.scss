@@ -13,6 +13,7 @@
   }
 
   .form-group {
+    margin-top: 15px;
     label {
       display: block;
       margin-bottom: 5px;
@@ -21,6 +22,7 @@
   }
 
   .register-button {
+    margin-top: 20px;
     background-color: vars.$color-button-background;
     color: white;
     padding: 12px 20px;
@@ -32,6 +34,7 @@
   }
 
   .login {
+    margin-top: 20px;
     text-align: center;
     .text {
       color: vars.$color-label;

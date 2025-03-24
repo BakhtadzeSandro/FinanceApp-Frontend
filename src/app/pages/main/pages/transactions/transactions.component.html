@@ -1,3 +1,6 @@
-<p>
-  transactions works!
-</p>
+<div class="table-container">
+  <div class="title">Transactions</div>
+  <div class="mt-6">
+    <app-table [cols]="transactionColumns()" [data]="data()"></app-table>
+  </div>
+</div>
