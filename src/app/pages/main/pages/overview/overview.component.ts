@@ -1,6 +1,7 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MoneyCardComponent } from '../../../../shared/money-card/money-card.component';
 import { MoneyCardContent } from '../../../../models/money-card.model';
+import { UsersService } from '../../../../services/users.service';
 
 @Component({
   selector: 'app-overview',
@@ -10,23 +11,28 @@ import { MoneyCardContent } from '../../../../models/money-card.model';
   imports: [MoneyCardComponent],
 })
 export class OverviewComponent implements OnInit {
+  private userService = inject(UsersService);
+
+  currentUser = signal(this.userService.currentUser());
+
   moneyCards = signal<MoneyCardContent[]>([
     {
       label: 'Current Balance',
-      quantity: '4,836.00',
+      quantity: this.currentUser()?.currentBalance ?? 0,
       isMain: true,
     },
     {
       label: 'Income',
-      quantity: '3,814.25',
+      quantity: this.currentUser()?.income ?? 0,
       isMain: false,
     },
     {
       label: 'Expenses',
-      quantity: '1,700.50',
+      quantity: this.currentUser()?.expense ?? 0,
       isMain: false,
     },
   ]);
+
   constructor() {}
 
   ngOnInit() {}

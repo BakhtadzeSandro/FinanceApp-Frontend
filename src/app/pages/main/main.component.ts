@@ -17,6 +17,10 @@ export class MainComponent implements OnInit {
 
   selectedPage = signal<SidebarItemRoute>(SidebarItemRoute.OVERVIEW);
 
+  get currentUser() {
+    return this.usersService.currentUser();
+  }
+
   sidenavItems = signal<SidenavItem[]>([
     {
       icon: 'pi pi-home',
@@ -54,6 +58,8 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.setSelectedPage();
-    this.usersService.getCurrentUser().subscribe();
+    this.usersService
+      .getCurrentUser()
+      .subscribe((val) => this.usersService.currentUser.set(val));
   }
 }

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { User } from '../models/user.model';
@@ -9,6 +9,8 @@ import { User } from '../models/user.model';
 })
 export class UsersService {
   private endpoint = 'users';
+
+  currentUser = signal<User | undefined>(undefined);
 
   constructor(private httpClient: HttpClient) {}
 

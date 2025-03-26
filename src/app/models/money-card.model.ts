@@ -1,5 +1,5 @@
 export interface MoneyCardContent {
   label: string;
-  quantity: string;
+  quantity: number;
   isMain: boolean;
 }

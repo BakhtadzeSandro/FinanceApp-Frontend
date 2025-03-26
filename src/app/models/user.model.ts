@@ -3,4 +3,7 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
+  currentBalance: number;
+  income: number;
+  expense: number;
 }

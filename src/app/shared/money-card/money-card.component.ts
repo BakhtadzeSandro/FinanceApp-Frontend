@@ -11,7 +11,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 })
 export class MoneyCardComponent {
   label = input.required<string>();
-  quantity = input.required<string>();
+  quantity = input.required<number>();
   isMain = input.required<boolean>();
 
   constructor() {}

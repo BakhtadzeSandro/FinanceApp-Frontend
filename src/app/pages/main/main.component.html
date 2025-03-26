@@ -5,7 +5,9 @@
       [(selectedPage)]="selectedPage"
     ></app-sidenav>
   </div>
+  @if (currentUser) {
   <div class="content">
     <router-outlet></router-outlet>
   </div>
+  }
 </div>
