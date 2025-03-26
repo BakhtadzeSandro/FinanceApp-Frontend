@@ -1,5 +1,13 @@
+@use "variables" as vars;
+
 ::ng-deep {
-  .generic-table {
-    border-radius: 20px;
+  .p-datatable-table-container {
+    margin-top: 30px;
   }
+}
+
+.table-container {
+  background-color: vars.$color-white;
+  padding: 40px;
+  border-radius: 10px;
 }

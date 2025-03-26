@@ -1,6 +1,10 @@
 <div class="table-container">
   <div class="title">Transactions</div>
-  <div class="mt-6">
-    <app-table [cols]="transactionColumns()" [data]="data()"></app-table>
+  <div class="mt-6 table-wrapper">
+    <app-table
+      [cols]="transactionColumns()"
+      [categoryFilterValues]="categoryFilterValues()"
+      [data]="data()"
+    ></app-table>
   </div>
 </div>

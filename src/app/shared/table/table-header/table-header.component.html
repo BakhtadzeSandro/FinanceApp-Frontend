@@ -1,0 +1,20 @@
+<div class="header-container">
+  <div class="search-bar" class="">
+    <p-iconfield class="">
+      <input pInputText placeholder="Search Transaction" class="w-full" />
+      <p-inputicon class="pi pi-search" />
+    </p-iconfield>
+  </div>
+  <div class="sort-and-filter">
+    @if (enableFilter()) {
+    <div class="input-group">
+      <label>Category</label>
+      <p-select
+        optionLabel="label"
+        placeholder="Select a category"
+        [options]="categoryFilterValues()"
+      />
+    </div>
+    }
+  </div>
+</div>

@@ -2,6 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { TableComponent } from '../../../../shared/table/table.component';
 import { TransactionsConfig } from './transactions.config';
 import { TableColumn } from '../../../../models/table.model';
+import { DropdownValue } from '../../../../models/inputs.model';
 
 @Component({
   selector: 'app-transactions',
@@ -13,12 +14,14 @@ import { TableColumn } from '../../../../models/table.model';
 })
 export class TransactionsComponent implements OnInit {
   transactionColumns = signal<TableColumn[]>([]);
+  categoryFilterValues = signal<DropdownValue[]>([]);
   data = signal<any>([]);
 
   constructor(private config: TransactionsConfig) {}
 
   ngOnInit() {
     this.transactionColumns.set(this.config.getTransactionsTableColumns());
+    this.categoryFilterValues.set(this.config.getCategories());
     this.data.set(this.config.getMockedData());
   }
 }
