@@ -1,5 +1,15 @@
 <div class="table-container">
-  <div class="title">Transactions</div>
+  <div class="header flex justify-between">
+    <div class="title">Transactions</div>
+    <div class="add-transaction">
+      <p-button
+        label="Add Transaction"
+        icon="pi pi-plus"
+        iconPos="left"
+        (click)="openTransactionDialog()"
+      />
+    </div>
+  </div>
   <div class="mt-6 table-wrapper">
     <app-table
       [cols]="transactionColumns()"

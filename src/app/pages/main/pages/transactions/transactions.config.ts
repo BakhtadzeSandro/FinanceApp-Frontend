@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { TableColumn } from '../../../../models/table.model';
 import { DropdownValue } from '../../../../models/inputs.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class TransactionsConfig {
   constructor() {}
 
