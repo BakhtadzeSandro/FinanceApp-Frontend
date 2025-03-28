@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NgxSpinnerModule } from 'ngx-spinner';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NgxSpinnerModule],
+  imports: [RouterOutlet, LoadingBarModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

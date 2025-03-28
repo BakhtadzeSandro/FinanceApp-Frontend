@@ -1,23 +1,17 @@
 import { Injectable } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoadingService {
-  requestCount = 0;
-  constructor(private spinnerService: NgxSpinnerService) {}
+  constructor(private loadingBar: LoadingBarService) {}
 
-  loading() {
-    this.requestCount++;
-    this.spinnerService.show();
+  startLoading() {
+    this.loadingBar.start();
   }
 
-  idle() {
-    this.requestCount--;
-    if (this.requestCount <= 0) {
-      this.requestCount = 0;
-      this.spinnerService.hide();
-    }
+  stopLoading() {
+    this.loadingBar.complete();
   }
 }

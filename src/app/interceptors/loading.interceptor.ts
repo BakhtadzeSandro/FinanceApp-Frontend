@@ -8,10 +8,10 @@ export function LoadingInterceptor(
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> {
   const loadingService = inject(LoadingService);
-  loadingService.loading();
+  loadingService.startLoading();
 
   return next(request).pipe(
     delay(2000),
-    finalize(() => loadingService.idle())
+    finalize(() => loadingService.stopLoading())
   );
 }
