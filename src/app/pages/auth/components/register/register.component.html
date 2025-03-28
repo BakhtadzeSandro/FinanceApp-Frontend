@@ -45,6 +45,24 @@
     />
   </div>
   <div class="form-group w-full">
+    <label for="avatar">Avatar</label>
+    <uc-config
+      ctx-name="my-uploader"
+      pubkey="ef2bc39273ee39177618"
+      multiple="false"
+    ></uc-config>
+
+    <uc-file-uploader-minimal
+      ctx-name="my-uploader"
+      class="uc-light"
+    ></uc-file-uploader-minimal>
+
+    <uc-upload-ctx-provider
+      #ctxProviderRef
+      [attr.ctx-name]="'my-uploader'"
+    ></uc-upload-ctx-provider>
+  </div>
+  <div class="form-group w-full">
     <label for="password">Password</label>
     <p-iconfield class="w-full">
       <input

@@ -1,5 +1,6 @@
 import {
   Component,
+  CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
   inject,
   output,
@@ -13,12 +14,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import {
-  PageMode,
-  LoginForm,
-  RegisterForm,
-  RegisterPayload,
-} from '../../auth.model';
+import { PageMode, RegisterForm, RegisterPayload } from '../../auth.model';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule, IconField } from 'primeng/iconfield';
@@ -27,6 +23,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { AuthService } from '../../../../services/auth.service';
 import { finalize, Subject, takeUntil } from 'rxjs';
+import * as UC from '@uploadcare/file-uploader';
+import '@uploadcare/file-uploader/web/uc-file-uploader-minimal.min.css';
+
+UC.defineComponents(UC);
 
 @Component({
   selector: 'app-register',
@@ -44,11 +44,17 @@ import { finalize, Subject, takeUntil } from 'rxjs';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class RegisterComponent {
   destroy$ = new Subject<void>();
   pageMode = output<PageMode>();
   registerForm = signal<FormGroup<RegisterForm> | undefined>(undefined);
+  uploadedFile = signal<File | undefined>(undefined);
+
+  @ViewChild('ctxProviderRef', { static: true }) ctxProviderRef!: ElementRef<
+    InstanceType<UC.UploadCtxProvider>
+  >;
 
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
@@ -66,6 +72,7 @@ export class RegisterComponent {
       lastName: fb.control(undefined, Validators.required),
       username: fb.control(undefined, Validators.required),
       email: fb.control(undefined, [Validators.required, Validators.email]),
+      avatar: fb.control(null),
       password: fb.control(undefined, Validators.required),
     });
     this.registerForm.set(form);
@@ -84,6 +91,7 @@ export class RegisterComponent {
     }
 
     const payload = this.registerForm()?.value;
+
     this.authService
       .registerUser(payload as RegisterPayload)
       .pipe(
@@ -97,7 +105,17 @@ export class RegisterComponent {
     this.pageMode.emit(PageMode.LOGIN);
   }
 
+  handleChangeEvent = (e: UC.EventMap['change']) => {
+    this.registerForm()
+      ?.get('avatar')
+      ?.patchValue(e?.detail?.allEntries[0]?.cdnUrl);
+  };
+
   ngOnInit() {
+    this.ctxProviderRef?.nativeElement?.addEventListener(
+      'change',
+      this.handleChangeEvent
+    );
     this.buildForm();
   }
 

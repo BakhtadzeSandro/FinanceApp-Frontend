@@ -46,3 +46,9 @@
     }
   }
 }
+
+:host::ng-deep {
+  .p-fileupload-basic {
+    display: block;
+  }
+}

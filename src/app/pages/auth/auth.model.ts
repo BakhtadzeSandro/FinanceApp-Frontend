@@ -10,6 +10,7 @@ export interface RegisterForm {
   lastName: FormControl<string | undefined>;
   username: FormControl<string | undefined>;
   email: FormControl<string | undefined>;
+  avatar: FormControl<string | null>;
   password: FormControl<string | undefined>;
 }
 
@@ -24,6 +25,7 @@ export interface RegisterPayload {
   username: string;
   email: string;
   password: string;
+  avatar: string;
 }
 
 export interface LoginPayload {
