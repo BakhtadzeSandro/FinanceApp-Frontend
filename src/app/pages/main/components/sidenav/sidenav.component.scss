@@ -131,8 +131,9 @@
 
     .text {
       white-space: nowrap;
-      overflow: hidden;
-      display: inline-block;
+      overflow: hidden !important;
+      text-overflow: ellipsis;
+      display: block;
     }
   }
 
@@ -157,8 +158,24 @@
 
     .text {
       white-space: nowrap;
-      overflow: hidden;
-      display: inline-block;
+      overflow: hidden !important;
+      text-overflow: ellipsis;
+      display: block;
+      max-width: 10rem;
+    }
+  }
+}
+
+::ng-deep {
+  .user-panel {
+    margin-left: 10px;
+    .op-item {
+      padding: 5px;
+      cursor: pointer;
+      border-radius: 8px;
+      &:hover {
+        background-color: rgb(224, 216, 216);
+      }
     }
   }
 }

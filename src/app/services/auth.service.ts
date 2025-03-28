@@ -28,12 +28,6 @@ export class AuthService {
     );
   }
 
-  getCurrentUser(): Observable<User> {
-    return this.httpClient.get<User>(
-      `${environment.apiUrl}${this.endpoint}/me`
-    );
-  }
-
   logout() {
     localStorage.removeItem('token');
     this.router.navigate(['auth']);

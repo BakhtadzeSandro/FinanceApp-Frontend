@@ -1,11 +1,11 @@
 <div class="main-container">
+  @if (currentUser) {
   <div class="sidenav">
     <app-sidenav
       [sidenavItems]="sidenavItems()"
       [(selectedPage)]="selectedPage"
     ></app-sidenav>
   </div>
-  @if (currentUser) {
   <div class="content">
     <router-outlet></router-outlet>
   </div>
