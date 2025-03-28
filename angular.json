@@ -30,10 +30,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "node_modules/ngx-spinner/animations/ball-triangle-path.css",
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "stylePreprocessorOptions": {
               "includePaths": ["src/scss/helpers"]
             },
@@ -95,10 +92,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "node_modules/ngx-spinner/animations/ball-triangle-path.css",
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         }
