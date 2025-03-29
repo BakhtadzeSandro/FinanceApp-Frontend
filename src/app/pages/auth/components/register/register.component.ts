@@ -14,7 +14,11 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { PageMode, RegisterForm, RegisterPayload } from '../../auth.model';
+import {
+  PageMode,
+  RegisterForm,
+  RegisterPayload,
+} from '../../../../models/auth.model';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule, IconField } from 'primeng/iconfield';

@@ -6,7 +6,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { TransactionForm, TransactionType } from '../transaction.model';
+import {
+  TransactionForm,
+  TransactionType,
+} from '../../../../../models/transaction.model';
 import { CommonModule } from '@angular/common';
 import { SelectChangeEvent, SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';

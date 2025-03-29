@@ -6,7 +6,6 @@ import {
   input,
   model,
   OnInit,
-  signal,
   ViewChild,
 } from '@angular/core';
 import {
@@ -18,6 +17,11 @@ import { AuthService } from '../../../../services/auth.service';
 import { UsersService } from '../../../../services/users.service';
 import { AvatarModule } from 'primeng/avatar';
 import { Popover, PopoverModule } from 'primeng/popover';
+import {
+  EditUserConfig,
+  EditUserModalComponent,
+} from '../edit-user-modal/edit-user-modal.component';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-sidenav',
@@ -26,6 +30,7 @@ import { Popover, PopoverModule } from 'primeng/popover';
   standalone: true,
   imports: [CommonModule, AvatarModule, PopoverModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DialogService],
 })
 export class SidenavComponent implements OnInit {
   sidenavItems = input.required<SidenavItem[]>();
@@ -38,6 +43,7 @@ export class SidenavComponent implements OnInit {
   private router = inject(Router);
   private authService = inject(AuthService);
   private usersService = inject(UsersService);
+  private dialogService = inject(DialogService);
 
   get currentUser() {
     return this.usersService.currentUser();
@@ -60,6 +66,32 @@ export class SidenavComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  openEditUserDialog() {
+    this.op.hide();
+    this.dialogService.open(EditUserModalComponent, {
+      header: 'Edit User',
+      showHeader: true,
+      closable: true,
+      modal: true,
+      width: '50vw',
+      focusOnShow: false,
+      dismissableMask: true,
+      breakpoints: {
+        '996px': '70vw',
+      },
+      data: {
+        userInfo: {
+          firstName: this.currentUser?.firstName,
+          lastName: this.currentUser?.lastName,
+          username: this.currentUser?.username,
+          email: this.currentUser?.email,
+          avatar: this.currentUser?.avatar,
+        },
+        userId: this.currentUser?._id!,
+      } satisfies EditUserConfig,
+    });
   }
 
   ngOnInit() {}

@@ -1,0 +1,71 @@
+<div class="change-password" (click)="openPasswordChangeModal()">
+  Change Password
+</div>
+<form class="register-form" [formGroup]="userForm()!" (ngSubmit)="updateUser()">
+  <div class="form-group w-full">
+    <label for="email">First Name</label>
+    <input
+      type="text"
+      id="firstName"
+      formControlName="firstName"
+      pInputText
+      class="w-full"
+    />
+  </div>
+  <div class="form-group w-full">
+    <label for="email">Last Name</label>
+    <input
+      type="text"
+      id="lastName"
+      formControlName="lastName"
+      pInputText
+      class="w-full"
+    />
+  </div>
+  <div class="form-group w-full">
+    <label for="email">Username</label>
+    <input
+      type="text"
+      id="username"
+      formControlName="username"
+      pInputText
+      class="w-full"
+    />
+  </div>
+  <div class="form-group w-full">
+    <label for="email">Email</label>
+    <input
+      type="email"
+      id="email"
+      formControlName="email"
+      pInputText
+      class="w-full"
+    />
+  </div>
+  <div class="form-group w-full">
+    <label for="avatar">Avatar</label>
+    <uc-config
+      ctx-name="my-uploader"
+      pubkey="ef2bc39273ee39177618"
+      multiple="false"
+    ></uc-config>
+
+    <uc-file-uploader-minimal
+      ctx-name="my-uploader"
+      class="uc-light"
+    ></uc-file-uploader-minimal>
+
+    <uc-upload-ctx-provider
+      #ctxProviderRef
+      [attr.ctx-name]="'my-uploader'"
+    ></uc-upload-ctx-provider>
+  </div>
+  <button
+    type="submit"
+    pButton
+    class="register-button"
+    [disabled]="userForm()?.invalid || isDataEqualToForm()"
+  >
+    Update User
+  </button>
+</form>

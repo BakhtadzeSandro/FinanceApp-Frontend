@@ -1,21 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LoginForm, PageMode } from '../../auth.model';
+import { PageMode } from '../../../../models/auth.model';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { LoginComponent, RegisterComponent } from '../index';
-import { HttpClient } from '@angular/common/http';
-import {
-  BehaviorSubject,
-  catchError,
-  Observable,
-  ReplaySubject,
-  Subject,
-  throwError,
-} from 'rxjs';
 
 @Component({
   selector: 'app-auth',

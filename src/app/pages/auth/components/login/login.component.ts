@@ -5,7 +5,6 @@ import {
   OnInit,
   output,
   signal,
-  Signal,
   ViewChild,
 } from '@angular/core';
 import {
@@ -15,7 +14,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { LoginForm, LoginPayload, PageMode } from '../../auth.model';
+import {
+  LoginForm,
+  LoginPayload,
+  PageMode,
+} from '../../../../models/auth.model';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';

@@ -8,10 +8,10 @@ export class LoadingService {
   constructor(private loadingBar: LoadingBarService) {}
 
   startLoading() {
-    this.loadingBar.start();
+    this.loadingBar.useRef().start();
   }
 
   stopLoading() {
-    this.loadingBar.complete();
+    this.loadingBar.useRef().complete();
   }
 }

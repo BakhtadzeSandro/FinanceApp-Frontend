@@ -32,3 +32,11 @@ export interface LoginPayload {
   username: string;
   password: string;
 }
+
+export interface UpdateUserForm {
+  firstName: FormControl<string | undefined>;
+  lastName: FormControl<string | undefined>;
+  username: FormControl<string | undefined>;
+  email: FormControl<string | undefined>;
+  avatar: FormControl<string | null>;
+}

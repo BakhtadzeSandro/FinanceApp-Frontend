@@ -6,5 +6,6 @@ export interface User {
   currentBalance: number;
   income: number;
   expense: number;
+  username: string;
   avatar?: string;
 }
