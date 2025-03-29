@@ -39,6 +39,7 @@ import {
 import { UsersService } from '../../../../services/users.service';
 import * as _ from 'lodash';
 import { PasswordChangeModalComponent } from '../password-change-modal/password-change-modal.component';
+import { AlertService } from '../../../../services/alert.service';
 
 export interface EditUserConfig {
   userInfo: Partial<User>;
@@ -78,6 +79,7 @@ export class EditUserModalComponent {
   private usersService = inject(UsersService);
   private dialogService = inject(DialogService);
   private ref = inject(DynamicDialogRef);
+  private alertService = inject(AlertService);
   config = inject(DynamicDialogConfig<EditUserConfig>);
 
   constructor() {}
@@ -110,7 +112,10 @@ export class EditUserModalComponent {
         takeUntil(this.destroy$),
         finalize(() => this.ref.close())
       )
-      .subscribe((val) => this.usersService.currentUser.set(val as User));
+      .subscribe((val) => {
+        this.usersService.currentUser.set(val as User);
+        this.alertService.success('User Information Updated Successfully');
+      });
   }
 
   handleChangeEvent = (e: UC.EventMap['change']) => {

@@ -27,6 +27,7 @@ import {
   takeUntil,
 } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
+import { AlertService } from '../../../../services/alert.service';
 
 export interface PasswordModalConfig {
   userId: string;
@@ -61,6 +62,7 @@ export class PasswordChangeModalComponent implements OnInit {
 
   private usersService = inject(UsersService);
   private ref = inject(DynamicDialogRef);
+  private alertService = inject(AlertService);
   config = inject(DynamicDialogConfig<PasswordModalConfig>);
 
   @ViewChild('inputPassword') inputPassword!: ElementRef;
@@ -106,7 +108,9 @@ export class PasswordChangeModalComponent implements OnInit {
           takeUntil(this.destroy$),
           finalize(() => this.ref.close())
         )
-        .subscribe();
+        .subscribe(() =>
+          this.alertService.success('Password Updated Successfully')
+        );
     }
   }
 

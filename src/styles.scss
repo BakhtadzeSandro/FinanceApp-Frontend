@@ -13,3 +13,9 @@ body {
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.alert {
+  &.swal2-container {
+    z-index: 9999;
+  }
+}

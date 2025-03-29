@@ -15,6 +15,7 @@ import Aura from '@primeng/themes/aura';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,7 +23,9 @@ export const appConfig: ApplicationConfig = {
     provideExperimentalZonelessChangeDetection(),
     // provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([TokenInterceptor, LoadingInterceptor])),
+    provideHttpClient(
+      withInterceptors([TokenInterceptor, LoadingInterceptor, ErrorInterceptor])
+    ),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
