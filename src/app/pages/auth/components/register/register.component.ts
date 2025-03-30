@@ -26,9 +26,19 @@ import { InputIcon } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { AuthService } from '../../../../services/auth.service';
-import { finalize, Subject, takeUntil } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  EMPTY,
+  finalize,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import * as UC from '@uploadcare/file-uploader';
 import '@uploadcare/file-uploader/web/uc-file-uploader-minimal.min.css';
+import { UsersService } from '../../../../services/users.service';
 
 UC.defineComponents(UC);
 
@@ -55,6 +65,10 @@ export class RegisterComponent {
   pageMode = output<PageMode>();
   registerForm = signal<FormGroup<RegisterForm> | undefined>(undefined);
   uploadedFile = signal<File | undefined>(undefined);
+  emailExists = signal<boolean>(false);
+  usernameExists = signal<boolean>(false);
+  usernameCheckInProgress = signal(false);
+  emailCheckInProgress = signal(false);
 
   @ViewChild('ctxProviderRef', { static: true }) ctxProviderRef!: ElementRef<
     InstanceType<UC.UploadCtxProvider>
@@ -62,6 +76,7 @@ export class RegisterComponent {
 
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  private usersService = inject(UsersService);
 
   showPassword = signal<boolean>(false);
 
@@ -115,12 +130,56 @@ export class RegisterComponent {
       ?.patchValue(e?.detail?.allEntries[0]?.cdnUrl);
   };
 
+  listenToUsernameChanges() {
+    this.registerForm()
+      ?.get('username')
+      ?.valueChanges.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$),
+        switchMap((val) => {
+          if (val && val !== this.usersService.currentUser()?.username) {
+            this.usernameCheckInProgress.set(true);
+            return this.usersService
+              .checkIfUserExists('username', val)
+              .pipe(finalize(() => this.usernameCheckInProgress.set(false)));
+          } else {
+            return EMPTY;
+          }
+        })
+      )
+      .subscribe((val) => this.usernameExists.set(val));
+  }
+
+  listenToEmailChanges() {
+    this.registerForm()
+      ?.get('email')
+      ?.valueChanges.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$),
+        switchMap((val) => {
+          if (val && val !== this.usersService.currentUser()?.email) {
+            this.emailCheckInProgress.set(true);
+            return this.usersService
+              .checkIfUserExists('email', val)
+              .pipe(finalize(() => this.emailCheckInProgress.set(false)));
+          } else {
+            return EMPTY;
+          }
+        })
+      )
+      .subscribe((val) => this.emailExists.set(val));
+  }
+
   ngOnInit() {
     this.ctxProviderRef?.nativeElement?.addEventListener(
       'change',
       this.handleChangeEvent
     );
     this.buildForm();
+    this.listenToUsernameChanges();
+    this.listenToEmailChanges();
   }
 
   ngOnDestroy() {

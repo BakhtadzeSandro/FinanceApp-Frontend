@@ -23,6 +23,8 @@ import {
   debounceTime,
   distinctUntilChanged,
   tap,
+  switchMap,
+  EMPTY,
 } from 'rxjs';
 import { PageMode, UpdateUserForm } from '../../../../models/auth.model';
 import { CommonModule } from '@angular/common';
@@ -67,7 +69,10 @@ export class EditUserModalComponent {
   destroy$ = new Subject<void>();
   pageMode = output<PageMode>();
   userForm = signal<FormGroup<UpdateUserForm> | undefined>(undefined);
-  uploadedFile = signal<File | undefined>(undefined);
+  emailExists = signal<boolean>(false);
+  usernameExists = signal<boolean>(false);
+  usernameCheckInProgress = signal(false);
+  emailCheckInProgress = signal(false);
 
   isDataEqualToForm = signal<boolean>(true);
 
@@ -157,6 +162,57 @@ export class EditUserModalComponent {
       .subscribe();
   }
 
+  listenToUsernameChanges() {
+    this.userForm()
+      ?.get('username')
+      ?.valueChanges.pipe(
+        tap((val) => {
+          if (val && val !== this.usersService.currentUser()?.username) {
+            this.usernameCheckInProgress.set(true);
+          }
+        }),
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$),
+        switchMap((val) => {
+          if (val && val !== this.usersService.currentUser()?.username) {
+            return this.usersService
+              .checkIfUserExists('username', val)
+              .pipe(finalize(() => this.usernameCheckInProgress.set(false)));
+          } else {
+            return EMPTY;
+          }
+        })
+      )
+      .subscribe((val) => this.usernameExists.set(val));
+  }
+
+  listenToEmailChanges() {
+    this.userForm()
+      ?.get('email')
+      ?.valueChanges.pipe(
+        tap((val) => {
+          if (val && val !== this.usersService.currentUser()?.email) {
+            this.emailCheckInProgress.set(true);
+          }
+        }),
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$),
+        switchMap((val) => {
+          if (val && val !== this.usersService.currentUser()?.email) {
+            console.log('here');
+            return this.usersService
+              .checkIfUserExists('email', val)
+              .pipe(finalize(() => this.emailCheckInProgress.set(false)));
+          } else {
+            return EMPTY;
+          }
+        })
+      )
+      .subscribe((val) => this.emailExists.set(val));
+  }
+
   ngOnInit() {
     this.ctxProviderRef?.nativeElement?.addEventListener(
       'change',
@@ -164,6 +220,8 @@ export class EditUserModalComponent {
     );
     this.buildForm(this.config.data?.userInfo);
     this.compareFormToData();
+    this.listenToEmailChanges();
+    this.listenToUsernameChanges();
   }
 
   ngOnDestroy() {

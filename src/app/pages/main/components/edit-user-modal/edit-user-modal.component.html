@@ -31,6 +31,12 @@
       pInputText
       class="w-full"
     />
+    @if (usernameExists()) {
+    <div class="mt-1 flex gap-2 items-center warning">
+      <i class="pi pi-info-circle"></i>
+      <div class="mt-0.3">Username Already Exists</div>
+    </div>
+    }
   </div>
   <div class="form-group w-full">
     <label for="email">Email</label>
@@ -41,6 +47,12 @@
       pInputText
       class="w-full"
     />
+    @if (emailExists()) {
+    <div class="mt-1 flex gap-2 items-center warning">
+      <i class="pi pi-info-circle"></i>
+      <div class="mt-0.3">Email Already Exists</div>
+    </div>
+    }
   </div>
   <div class="form-group w-full">
     <label for="avatar">Avatar</label>
@@ -64,7 +76,14 @@
     type="submit"
     pButton
     class="register-button"
-    [disabled]="userForm()?.invalid || isDataEqualToForm()"
+    [disabled]="
+      userForm()?.invalid ||
+      isDataEqualToForm() ||
+      emailExists() ||
+      usernameExists() ||
+      emailCheckInProgress() ||
+      usernameCheckInProgress()
+    "
   >
     Update User
   </button>

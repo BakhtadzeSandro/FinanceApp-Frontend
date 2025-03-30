@@ -1,4 +1,4 @@
-import { HttpClient, httpResource } from '@angular/common/http';
+import { HttpClient, HttpParams, httpResource } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -39,6 +39,16 @@ export class UsersService {
     return this.httpClient.patch(
       `${environment.apiUrl}${this.endpoint}/${userId}`,
       payload
+    );
+  }
+
+  checkIfUserExists(field: string, value: string): Observable<boolean> {
+    const params = new HttpParams().set('field', field).set('value', value);
+    return this.httpClient.get<boolean>(
+      `${environment.apiUrl}${this.endpoint}/check-user`,
+      {
+        params,
+      }
     );
   }
 }

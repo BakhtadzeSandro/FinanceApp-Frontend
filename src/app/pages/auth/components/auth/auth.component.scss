@@ -2,7 +2,7 @@
 
 .login-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   background-color: vars.$color-page-background;
   padding: 20px;
   gap: 20px;
