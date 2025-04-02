@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
-import { AlertService } from '../services/alert.service';
+import { AlertService } from '@app/services/alert.service';
 
 export function ErrorInterceptor(
   request: HttpRequest<unknown>,

@@ -7,19 +7,23 @@ import {
   Validators,
 } from '@angular/forms';
 import {
+  Transaction,
   TransactionForm,
   TransactionType,
-} from '../../../../../models/transaction.model';
+} from '@app/models/transaction.model';
 import { CommonModule } from '@angular/common';
 import { SelectChangeEvent, SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DatePickerModule } from 'primeng/datepicker';
-import { DropdownValue } from '../../../../../models/inputs.model';
+import { DropdownValue } from '@app/models/inputs.model';
 import { TransactionsConfig } from '../transactions.config';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { TransactionsService } from '@app/services/transactions.service';
+import { finalize } from 'rxjs';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-transaction-modal',
@@ -45,6 +49,8 @@ export class TransactionModalComponent {
 
   private fb = inject(FormBuilder);
   private config = inject(TransactionsConfig);
+  private transactionsService = inject(TransactionsService);
+  private ref = inject(DynamicDialogRef);
 
   constructor() {}
 
@@ -75,7 +81,19 @@ export class TransactionModalComponent {
   }
 
   manageTransaction() {
-    console.log(this.transactionForm()?.getRawValue());
+    const formValue = this.transactionForm()?.getRawValue();
+    const payload = {
+      category: (formValue?.category as DropdownValue)?.value,
+      amount: formValue?.amount!,
+      date: formValue?.date!,
+      recipientOrSender: formValue?.recipientOrSender!,
+      type: formValue?.type!,
+    } satisfies Transaction;
+
+    return this.transactionsService
+      .addTransaction(payload)
+      .pipe(finalize(() => this.ref.close()))
+      .subscribe(() => this.transactionsService.page.set(0));
   }
 
   ngOnInit() {

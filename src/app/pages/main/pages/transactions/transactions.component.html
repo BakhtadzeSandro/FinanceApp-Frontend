@@ -14,7 +14,41 @@
     <app-table
       [cols]="transactionColumns()"
       [categoryFilterValues]="categoryFilterValues()"
-      [data]="data()"
-    ></app-table>
+      [data]="transactionsService.transactions.value()?.data!"
+      [loading]="transactionsService.transactions.isLoading()"
+      [rows]="transactionsService.limit()!"
+      [total]="transactionsService.transactions.value()?.paginator?.totalCount!"
+      [firstRowIndex]="firstRowIndex()"
+      [showPaginator]="true"
+      [enableFilter]="true"
+      [enableSearch]="true"
+      [rowTemplate]="rowTemplate"
+      (pageChanged)="pageChangeHandler($event)"
+      (emitSearchKeyEvent)="handleSearch($event)"
+      (emitCategoryEvent)="handleCategoryChanges($event)"
+    >
+      <ng-template #rowTemplate let-rowData="rowData" let-col="col">
+        @switch (col.columnType) { @case (columnType.DATE) {
+        <div>{{ rowData.date | date : "dd/MM/yyyy" }}</div>
+        } @case (columnType.CUSTOM) { @if (col.value === "recipientOrSender") {
+        <div class="flex gap-3 items-center recipient-sender">
+          <div>
+            <img src="{{ rowData.category | transactionsImagePipe }}" />
+          </div>
+          <div>{{ rowData.recipientOrSender }}</div>
+        </div>
+        } @if (col.value === 'category') {
+        <div>{{ (rowData.category | transactionCategoryPipe) || "-" }}</div>
+        } @if (col.value === 'amount') {
+        <div [ngClass]="getAmountClass(rowData.type)">
+          {{
+            rowData.type.toLowerCase() === transactionType.EXPENSE ? "-" : "+"
+          }}${{ rowData.amount }}
+        </div>
+        } } @default {
+        <td>{{ rowData[col.value] }}</td>
+        } }
+      </ng-template>
+    </app-table>
   </div>
 </div>

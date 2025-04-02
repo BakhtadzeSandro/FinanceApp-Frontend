@@ -26,22 +26,22 @@ import {
   switchMap,
   EMPTY,
 } from 'rxjs';
-import { PageMode, UpdateUserForm } from '../../../../models/auth.model';
+import { PageMode, UpdateUserForm } from '@app/models/auth.model';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { User } from '../../../../models/user.model';
+import { User } from '@app/models/user.model';
 import {
   DialogService,
   DynamicDialogConfig,
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
-import { UsersService } from '../../../../services/users.service';
+import { UsersService } from '@app/services/users.service';
 import * as _ from 'lodash';
 import { PasswordChangeModalComponent } from '../password-change-modal/password-change-modal.component';
-import { AlertService } from '../../../../services/alert.service';
+import { AlertService } from '@app/services/alert.service';
 
 export interface EditUserConfig {
   userInfo: Partial<User>;
@@ -201,7 +201,6 @@ export class EditUserModalComponent {
         takeUntil(this.destroy$),
         switchMap((val) => {
           if (val && val !== this.usersService.currentUser()?.email) {
-            console.log('here');
             return this.usersService
               .checkIfUserExists('email', val)
               .pipe(finalize(() => this.emailCheckInProgress.set(false)));

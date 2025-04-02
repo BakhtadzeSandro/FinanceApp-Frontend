@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { TableColumn } from '../../../../models/table.model';
-import { DropdownValue } from '../../../../models/inputs.model';
+import { ColumnType, TableColumn } from '@app/models/table.model';
+import { DropdownValue } from '@app/models/inputs.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,15 +12,18 @@ export class TransactionsConfig {
     return [
       {
         header: 'Recipient / Sender',
-        value: 'address',
+        value: 'recipientOrSender',
+        columnType: ColumnType.CUSTOM,
       },
       {
         header: 'Category',
         value: 'category',
+        columnType: ColumnType.CUSTOM,
       },
       {
         header: 'Transaction Date',
-        value: 'transactionDate',
+        value: 'date',
+        columnType: ColumnType.DATE,
       },
       {
         header: 'Type',
@@ -29,18 +32,8 @@ export class TransactionsConfig {
       {
         header: 'Amount',
         value: 'amount',
-      },
-    ];
-  }
-
-  getMockedData() {
-    return [
-      {
-        address: 'Emma Richardson',
-        category: 'Test Category',
-        transactionDate: '11/11/2025',
-        type: 'Income',
-        amount: 1500,
+        columnType: ColumnType.CUSTOM,
+        tableAlign: 'right',
       },
     ];
   }

@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { delay, finalize, Observable } from 'rxjs';
-import { LoadingService } from '../services/loading.service';
+import { LoadingService } from '@app/services/loading.service';
 
 export function LoadingInterceptor(
   request: HttpRequest<unknown>,
@@ -11,7 +11,7 @@ export function LoadingInterceptor(
   loadingService.startLoading();
 
   return next(request).pipe(
-    delay(2000),
+    delay(1000),
     finalize(() => loadingService.stopLoading())
   );
 }

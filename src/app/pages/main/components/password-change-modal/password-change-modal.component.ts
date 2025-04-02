@@ -17,7 +17,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { UsersService } from '../../../../services/users.service';
+import { UsersService } from '@app/services/users.service';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -27,7 +27,7 @@ import {
   takeUntil,
 } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
-import { AlertService } from '../../../../services/alert.service';
+import { AlertService } from '@app/services/alert.service';
 
 export interface PasswordModalConfig {
   userId: string;

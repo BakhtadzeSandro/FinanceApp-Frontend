@@ -21,7 +21,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     importProvidersFrom([BrowserModule, BrowserAnimationsModule]),
     provideExperimentalZonelessChangeDetection(),
-    // provideZoneChangeDetection({ eventCoalescing: true }),
+    // provideZoneChangeDetection(),
     provideRouter(routes),
     provideHttpClient(
       withInterceptors([TokenInterceptor, LoadingInterceptor, ErrorInterceptor])

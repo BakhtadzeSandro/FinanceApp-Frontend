@@ -1,8 +1,8 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { Router, RouterModule } from '@angular/router';
-import { SidebarItemRoute, SidenavItem } from '../../models/sidebar.model';
-import { UsersService } from '../../services/users.service';
+import { SidebarItemRoute, SidenavItem } from '@app/models/sidebar.model';
+import { UsersService } from '@app/services/users.service';
 
 @Component({
   selector: 'app-main',

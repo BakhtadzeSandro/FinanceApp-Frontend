@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PageMode } from '../../../../models/auth.model';
+import { PageMode } from '@app/models/auth.model';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';

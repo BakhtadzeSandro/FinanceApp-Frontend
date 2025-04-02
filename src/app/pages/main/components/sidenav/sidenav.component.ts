@@ -8,13 +8,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {
-  SidebarItemRoute,
-  SidenavItem,
-} from '../../../../models/sidebar.model';
+import { SidebarItemRoute, SidenavItem } from '@app/models/sidebar.model';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../../services/auth.service';
-import { UsersService } from '../../../../services/users.service';
+import { AuthService } from '@app/services/auth.service';
+import { UsersService } from '@app/services/users.service';
 import { AvatarModule } from 'primeng/avatar';
 import { Popover, PopoverModule } from 'primeng/popover';
 import {

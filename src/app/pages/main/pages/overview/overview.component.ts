@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { MoneyCardComponent } from '../../../../shared/money-card/money-card.component';
-import { MoneyCardContent } from '../../../../models/money-card.model';
-import { UsersService } from '../../../../services/users.service';
+import { MoneyCardComponent } from '@app/shared/money-card/money-card.component';
+import { MoneyCardContent } from '@app/models/money-card.model';
+import { UsersService } from '@app/services/users.service';
 
 @Component({
   selector: 'app-overview',

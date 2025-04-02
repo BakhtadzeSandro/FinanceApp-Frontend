@@ -8,3 +8,22 @@
     border-radius: 50px;
   }
 }
+
+.recipient-sender {
+  img {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.expense {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+
+.income {
+  font-size: 18px;
+  font-weight: bold;
+  color: green;
+}

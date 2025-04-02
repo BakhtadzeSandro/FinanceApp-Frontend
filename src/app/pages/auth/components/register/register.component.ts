@@ -18,14 +18,14 @@ import {
   PageMode,
   RegisterForm,
   RegisterPayload,
-} from '../../../../models/auth.model';
+} from '@app/models/auth.model';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule, IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { AuthService } from '../../../../services/auth.service';
+import { AuthService } from '@app/services/auth.service';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -38,7 +38,7 @@ import {
 } from 'rxjs';
 import * as UC from '@uploadcare/file-uploader';
 import '@uploadcare/file-uploader/web/uc-file-uploader-minimal.min.css';
-import { UsersService } from '../../../../services/users.service';
+import { UsersService } from '@app/services/users.service';
 
 UC.defineComponents(UC);
 
