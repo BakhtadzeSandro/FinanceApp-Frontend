@@ -14,10 +14,10 @@
     <app-table
       [cols]="transactionColumns()"
       [categoryFilterValues]="categoryFilterValues()"
-      [data]="transactionsService.transactions.value()?.data!"
-      [loading]="transactionsService.transactions.isLoading()"
-      [rows]="transactionsService.limit()!"
-      [total]="transactionsService.transactions.value()?.paginator?.totalCount!"
+      [data]="data()"
+      [loading]="loading()"
+      [rows]="tableData().paginator.limit"
+      [total]="tableData().paginator.totalCount!"
       [firstRowIndex]="firstRowIndex()"
       [showPaginator]="true"
       [enableFilter]="true"
@@ -27,9 +27,13 @@
       (emitSearchKeyEvent)="handleSearch($event)"
       (emitCategoryEvent)="handleCategoryChanges($event)"
     >
+      <!-- [data]="transactionsService.transactions.value()?.data!"
+    [loading]="transactionsService.transactions.isLoading()"
+    [rows]="transactionsService.limit()!"
+    [total]="transactionsService.transactions.value()?.paginator?.totalCount!" -->
       <ng-template #rowTemplate let-rowData="rowData" let-col="col">
         @switch (col.columnType) { @case (columnType.DATE) {
-        <div>{{ rowData.date | date : "dd/MM/yyyy" }}</div>
+        <div>{{ rowData[col.value] | date : "dd/MM/yyyy" }}</div>
         } @case (columnType.CUSTOM) { @if (col.value === "recipientOrSender") {
         <div class="flex gap-3 items-center recipient-sender">
           <div>

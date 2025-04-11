@@ -6,5 +6,5 @@ export interface ListResponse<T> {
 export interface Paginator {
   page: number;
   limit: number;
-  totalCount: number;
+  totalCount?: number;
 }

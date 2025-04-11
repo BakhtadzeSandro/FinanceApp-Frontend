@@ -24,6 +24,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { TransactionsService } from '@app/services/transactions.service';
 import { finalize } from 'rxjs';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { TableService } from '@app/services/table.service';
 
 @Component({
   selector: 'app-transaction-modal',
@@ -51,6 +52,7 @@ export class TransactionModalComponent {
   private config = inject(TransactionsConfig);
   private transactionsService = inject(TransactionsService);
   private ref = inject(DynamicDialogRef);
+  private tableService = inject(TableService);
 
   constructor() {}
 
@@ -86,6 +88,7 @@ export class TransactionModalComponent {
       category: (formValue?.category as DropdownValue)?.value,
       amount: formValue?.amount!,
       date: formValue?.date!,
+      dateAdded: new Date(),
       recipientOrSender: formValue?.recipientOrSender!,
       type: formValue?.type!,
     } satisfies Transaction;
@@ -93,7 +96,10 @@ export class TransactionModalComponent {
     return this.transactionsService
       .addTransaction(payload)
       .pipe(finalize(() => this.ref.close()))
-      .subscribe(() => this.transactionsService.page.set(0));
+      .subscribe(() => {
+        this.transactionsService.refresh.set(new Date());
+        // this.tableService.paginator()?.changePage(0);
+      });
   }
 
   ngOnInit() {

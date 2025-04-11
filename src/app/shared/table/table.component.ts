@@ -1,10 +1,18 @@
-import { Component, effect, input, output, TemplateRef } from '@angular/core';
+import {
+  Component,
+  effect,
+  input,
+  output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { TableColumn } from '@app/models/table.model';
 import { TableHeaderComponent } from './table-header/table-header.component';
 import { DropdownValue } from '@app/models/inputs.model';
 import { CommonModule } from '@angular/common';
-import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { Paginator, PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { TableService } from '@app/services/table.service';
 
 @Component({
   selector: 'app-table',
@@ -31,7 +39,9 @@ export class TableComponent<T> {
   emitSearchKeyEvent = output<string>();
   emitCategoryEvent = output<string>();
 
-  constructor() {}
+  @ViewChild('paginator') paginator: Paginator | undefined;
+
+  constructor(private tableService: TableService) {}
 
   onPageChange(event: PaginatorState) {
     this.pageChanged.emit(event);
@@ -45,5 +55,11 @@ export class TableComponent<T> {
     this.emitCategoryEvent.emit(event);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // this.tableService.paginator.set(this.paginator);
+  }
+
+  ngAfterViewInit() {
+    this.tableService.paginator.set(this.paginator);
+  }
 }

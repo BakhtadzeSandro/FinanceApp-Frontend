@@ -11,6 +11,7 @@ export interface TransactionForm {
 
 export interface Transaction {
   date: Date;
+  dateAdded: Date;
   type: TransactionType | string;
   recipientOrSender: string;
   amount: number;

@@ -1,3 +1,5 @@
+import { Paginator } from './api.model';
+
 export interface TableColumn {
   header: string;
   value: string;
@@ -6,8 +8,9 @@ export interface TableColumn {
 }
 
 export interface TableData {
-  page: number;
-  limit: number;
+  paginator: Paginator;
+  filter: Record<string, string>;
+  searchKey: string;
 }
 
 export enum ColumnType {

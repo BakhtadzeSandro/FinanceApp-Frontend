@@ -21,6 +21,11 @@ export class TransactionsConfig {
         columnType: ColumnType.CUSTOM,
       },
       {
+        header: 'Date Added',
+        value: 'dateAdded',
+        columnType: ColumnType.DATE,
+      },
+      {
         header: 'Transaction Date',
         value: 'date',
         columnType: ColumnType.DATE,
