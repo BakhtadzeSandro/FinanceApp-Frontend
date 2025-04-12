@@ -6,7 +6,7 @@
         label="Add Transaction"
         icon="pi pi-plus"
         iconPos="left"
-        (click)="openTransactionDialog()"
+        (click)="openTransactionDialog(false)"
       />
     </div>
   </div>
@@ -26,6 +26,7 @@
       (pageChanged)="pageChangeHandler($event)"
       (emitSearchKeyEvent)="handleSearch($event)"
       (emitCategoryEvent)="handleCategoryChanges($event)"
+      (emitRowSelectEvent)="handleRowSelection($event)"
     >
       <!-- [data]="transactionsService.transactions.value()?.data!"
     [loading]="transactionsService.transactions.isLoading()"
@@ -45,10 +46,10 @@
         <div>{{ (rowData.category | transactionCategoryPipe) || "-" }}</div>
         } @if (col.value === 'amount') {
         <div [ngClass]="getAmountClass(rowData.type)">
-          {{
-            rowData.type.toLowerCase() === transactionType.EXPENSE ? "-" : "+"
-          }}${{ rowData.amount }}
+          {{ rowData.amount | amount }}
         </div>
+        } @if (col.value === 'type') {
+        <div>{{ rowData.type | capitalizePipe }}</div>
         } } @default {
         <td>{{ rowData[col.value] }}</td>
         } }

@@ -1,10 +1,9 @@
-import { HttpClient, HttpParams, httpResource } from '@angular/common/http';
-import { effect, Injectable, signal } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Transaction } from '@app/models/transaction.model';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { ListResponse } from '@app/models/api.model';
-import { UsersService } from './users.service';
 import { TableData } from '@app/models/table.model';
 
 export const categoryMap = {
@@ -31,12 +30,7 @@ export class TransactionsService {
   // searchKey = signal('');
   // selectedCategory = signal('');
 
-  refresh = signal(new Date());
-
-  constructor(
-    private httpClient: HttpClient,
-    private usersService: UsersService
-  ) {}
+  constructor(private httpClient: HttpClient) {}
 
   addTransaction(
     createTransactionDto: Transaction
@@ -44,6 +38,31 @@ export class TransactionsService {
     return this.httpClient.post<ListResponse<Transaction[]>>(
       `${environment.apiUrl}${this.endpoint}/add-transaction`,
       createTransactionDto
+    );
+  }
+
+  editTransaction(
+    payload: Transaction
+  ): Observable<ListResponse<Transaction[]>> {
+    return this.httpClient.patch<ListResponse<Transaction[]>>(
+      `${environment.apiUrl}${this.endpoint}/${payload._id}`,
+      payload
+    );
+  }
+
+  getTransactionsList(
+    tableData: TableData
+  ): Observable<ListResponse<Transaction[]>> {
+    const params = new HttpParams()
+      .set('page', Number(tableData.paginator.page))
+      .set('limit', tableData.paginator.limit)
+      .set('filter', JSON.stringify(tableData.filter))
+      .set('search', tableData.searchKey);
+    return this.httpClient.get<ListResponse<Transaction[]>>(
+      `${environment.apiUrl}${this.endpoint}`,
+      {
+        params,
+      }
     );
   }
 
@@ -83,20 +102,4 @@ export class TransactionsService {
   //   this.page.set(newPage);
   //   this.limit.set(newLimit);
   // }
-
-  getTransactionsList(
-    tableData: TableData
-  ): Observable<ListResponse<Transaction[]>> {
-    const params = new HttpParams()
-      .set('page', Number(tableData.paginator.page) + 1)
-      .set('limit', tableData.paginator.limit)
-      .set('filter', JSON.stringify(tableData.filter))
-      .set('search', tableData.searchKey);
-    return this.httpClient.get<ListResponse<Transaction[]>>(
-      `${environment.apiUrl}${this.endpoint}`,
-      {
-        params,
-      }
-    );
-  }
 }

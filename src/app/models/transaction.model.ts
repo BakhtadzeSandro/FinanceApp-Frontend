@@ -15,7 +15,9 @@ export interface Transaction {
   type: TransactionType | string;
   recipientOrSender: string;
   amount: number;
-  category?: string;
+  category?: string | DropdownValue;
+  _id?: string;
+  userId?: string;
 }
 
 export enum TransactionType {

@@ -1,6 +1,5 @@
 import {
   Component,
-  effect,
   input,
   output,
   TemplateRef,
@@ -38,10 +37,21 @@ export class TableComponent<T> {
   pageChanged = output<PaginatorState>();
   emitSearchKeyEvent = output<string>();
   emitCategoryEvent = output<string>();
+  emitRowSelectEvent = output<T>();
+
+  selectedRows: T[] = [];
 
   @ViewChild('paginator') paginator: Paginator | undefined;
 
   constructor(private tableService: TableService) {}
+
+  onSort(event: any) {
+    console.log(event);
+  }
+
+  onRowSelect(rowData: T, event: any) {
+    this.emitRowSelectEvent.emit(rowData);
+  }
 
   onPageChange(event: PaginatorState) {
     this.pageChanged.emit(event);

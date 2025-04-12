@@ -12,7 +12,9 @@ import { PaginatorState } from 'primeng/paginator';
 import { CommonModule } from '@angular/common';
 import { TransactionsImagePipe } from 'src/app/pipes/transactions-image.pipe';
 import { TransactionCategoryPipe } from 'src/app/pipes/transactionCategory.pipe';
-import { finalize, tap } from 'rxjs';
+import { EMPTY, finalize, switchMap, tap } from 'rxjs';
+import { CapitalizePipe } from 'src/app/pipes/capitalize.pipe';
+import { AmountPipe } from 'src/app/pipes/amount.pipe';
 
 @Component({
   selector: 'app-transactions',
@@ -25,6 +27,8 @@ import { finalize, tap } from 'rxjs';
     CommonModule,
     TransactionsImagePipe,
     TransactionCategoryPipe,
+    CapitalizePipe,
+    AmountPipe,
   ],
   providers: [DialogService],
 })
@@ -42,7 +46,7 @@ export class TransactionsComponent implements OnInit {
   tableData = signal<TableData>({
     paginator: {
       limit: 10,
-      page: 0,
+      page: 1,
     },
     filter: {},
     searchKey: '',
@@ -54,25 +58,56 @@ export class TransactionsComponent implements OnInit {
     public transactionsService: TransactionsService
   ) {}
 
-  openTransactionDialog() {
-    this.dialogService.open(TransactionModalComponent, {
-      header: 'Add New Transaction',
-      showHeader: true,
-      closable: true,
-      modal: true,
-      width: '50vw',
-      focusOnShow: false,
-      dismissableMask: true,
-      breakpoints: {
-        '996px': '70vw',
-      },
-    });
+  openTransactionDialog(isEditMode: boolean, transaction?: Transaction) {
+    this.dialogService
+      .open(TransactionModalComponent, {
+        header: isEditMode ? 'Edit Transaction' : 'Add New Transaction',
+        showHeader: true,
+        closable: true,
+        modal: true,
+        width: '50vw',
+        focusOnShow: false,
+        dismissableMask: true,
+        data: {
+          transaction,
+          isEditMode,
+        },
+        breakpoints: {
+          '996px': '70vw',
+        },
+      })
+      .onClose.pipe(
+        switchMap((payload) => {
+          if (!payload) {
+            return EMPTY;
+          }
+          return isEditMode
+            ? this.transactionsService.editTransaction(payload)
+            : this.transactionsService.addTransaction(payload);
+        })
+      )
+      .subscribe(() => this.getData());
   }
 
   getAmountClass(transactionType: TransactionType) {
     return transactionType.toLowerCase() === TransactionType.EXPENSE
       ? 'expense'
       : 'income';
+  }
+
+  handleRowSelection(data: Transaction) {
+    const transactionData = data.category
+      ? {
+          ...data,
+          category: {
+            value: data.category,
+            label: this.categoryFilterValues().find(
+              (category) => category.value === data.category
+            )?.label,
+          } as DropdownValue,
+        }
+      : data;
+    this.openTransactionDialog(true, transactionData);
   }
 
   pageChangeHandler(event: PaginatorState) {
@@ -82,7 +117,7 @@ export class TransactionsComponent implements OnInit {
         paginator: {
           ...this.tableData().paginator,
           limit: event.rows,
-          page: event.page,
+          page: event.page + 1,
         },
       });
       this.firstRowIndex.set(event.page * event.rows);
@@ -95,7 +130,7 @@ export class TransactionsComponent implements OnInit {
       ...this.tableData(),
       paginator: {
         ...this.tableData().paginator,
-        page: 0,
+        page: 1,
       },
       searchKey,
     });

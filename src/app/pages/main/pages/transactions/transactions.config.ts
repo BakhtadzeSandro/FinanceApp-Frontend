@@ -33,6 +33,7 @@ export class TransactionsConfig {
       {
         header: 'Type',
         value: 'type',
+        columnType: ColumnType.CUSTOM,
       },
       {
         header: 'Amount',

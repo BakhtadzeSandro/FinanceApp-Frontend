@@ -14,12 +14,18 @@
     [dataKey]="'_id'"
     [size]="'large'"
     styleClass="generic-table"
+    [showInitialSortBadge]="true"
+    [customSort]="true"
+    (onSort)="onSort($event)"
+    [(selection)]="selectedRows"
+    [selectionMode]="'multiple'"
   >
     <ng-template #header let-columns>
       <tr>
         @for (col of columns; track $index) {
-        <th [class.align-right]="col.tableAlign === 'right'">
+        <th [pSortableColumn]="col.value">
           {{ col.header }}
+          <p-sortIcon [field]="col.value" />
         </th>
         }
       </tr>
@@ -30,7 +36,7 @@
       let-columns="columns"
       let-rowIndex="rowIndex"
     >
-      <tr>
+      <tr (click)="onRowSelect(rowData, $event)" style="cursor: pointer">
         @for (col of columns; track $index) {
         <td [class.align-right]="col.tableAlign === 'right'">
           <ng-container
@@ -45,7 +51,7 @@
           ></ng-container>
         </td>
         <ng-template #defaultTdTemplate>
-          <td [class.align-right]="col.tableAlign === 'right'">
+          <td>
             {{ rowData[col.value] }}
           </td>
         </ng-template>

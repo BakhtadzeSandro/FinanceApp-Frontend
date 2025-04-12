@@ -21,10 +21,12 @@ import { TransactionsConfig } from '../transactions.config';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { TransactionsService } from '@app/services/transactions.service';
-import { finalize } from 'rxjs';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
-import { TableService } from '@app/services/table.service';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+
+export interface TransactionsModalConfig {
+  transaction: Transaction;
+  isEditMode: boolean;
+}
 
 @Component({
   selector: 'app-transaction-modal',
@@ -50,26 +52,32 @@ export class TransactionModalComponent {
 
   private fb = inject(FormBuilder);
   private config = inject(TransactionsConfig);
-  private transactionsService = inject(TransactionsService);
   private ref = inject(DynamicDialogRef);
-  private tableService = inject(TableService);
+  modalConfig = inject(DynamicDialogConfig<TransactionsModalConfig>);
 
   constructor() {}
 
-  private buildForm() {
+  private buildForm(transaction: Transaction) {
     const fb = this.fb.nonNullable;
     const form = new FormGroup<TransactionForm>({
-      category: fb.control(undefined),
-      date: fb.control(undefined, Validators.required),
+      category: fb.control(transaction?.category),
+      date: fb.control(
+        transaction?.date ? new Date(transaction.date) : undefined,
+        Validators.required
+      ),
       type: fb.control(
         {
-          value: TransactionType.INCOME,
+          value:
+            (transaction?.type as TransactionType) ?? TransactionType.INCOME,
           disabled: true,
         },
         Validators.required
       ),
-      recipientOrSender: fb.control(undefined, Validators.required),
-      amount: fb.control(undefined, Validators.required),
+      recipientOrSender: fb.control(
+        transaction?.recipientOrSender,
+        Validators.required
+      ),
+      amount: fb.control(transaction?.amount, Validators.required),
     });
     this.transactionForm.set(form);
   }
@@ -86,24 +94,25 @@ export class TransactionModalComponent {
     const formValue = this.transactionForm()?.getRawValue();
     const payload = {
       category: (formValue?.category as DropdownValue)?.value,
-      amount: formValue?.amount!,
+      amount:
+        formValue?.type === TransactionType.EXPENSE
+          ? formValue?.amount! * -1
+          : formValue?.amount!,
       date: formValue?.date!,
       dateAdded: new Date(),
       recipientOrSender: formValue?.recipientOrSender!,
       type: formValue?.type!,
+      ...(this.modalConfig.data?.isEditMode && {
+        _id: this.modalConfig.data?.transaction?._id,
+        userId: this.modalConfig.data?.transaction?.userId,
+      }),
     } satisfies Transaction;
 
-    return this.transactionsService
-      .addTransaction(payload)
-      .pipe(finalize(() => this.ref.close()))
-      .subscribe(() => {
-        this.transactionsService.refresh.set(new Date());
-        // this.tableService.paginator()?.changePage(0);
-      });
+    this.ref.close(payload);
   }
 
   ngOnInit() {
-    this.buildForm();
+    this.buildForm(this.modalConfig?.data?.transaction);
     this.categories.set(this.config.getCategories());
   }
 }
