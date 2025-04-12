@@ -42,7 +42,7 @@ export class TransactionsComponent implements OnInit {
   tableData = signal<TableData>({
     paginator: {
       limit: 10,
-      page: 1,
+      page: 0,
     },
     filter: {},
     searchKey: '',
@@ -82,10 +82,10 @@ export class TransactionsComponent implements OnInit {
         paginator: {
           ...this.tableData().paginator,
           limit: event.rows,
-          page: event.page + 1,
+          page: event.page,
         },
       });
-      this.firstRowIndex.set(event.page + 1 * event.rows);
+      this.firstRowIndex.set(event.page * event.rows);
     }
     this.getData();
   }
@@ -118,6 +118,9 @@ export class TransactionsComponent implements OnInit {
       .getTransactionsList(this.tableData())
       .pipe(
         tap((val) => {
+          this.firstRowIndex.set(
+            (val.paginator.page - 1) * val.paginator.limit
+          );
           this.tableData.set({
             ...this.tableData(),
             paginator: val.paginator,

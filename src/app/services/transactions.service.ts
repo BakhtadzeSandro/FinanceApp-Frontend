@@ -88,7 +88,7 @@ export class TransactionsService {
     tableData: TableData
   ): Observable<ListResponse<Transaction[]>> {
     const params = new HttpParams()
-      .set('page', Number(tableData.paginator.page))
+      .set('page', Number(tableData.paginator.page) + 1)
       .set('limit', tableData.paginator.limit)
       .set('filter', JSON.stringify(tableData.filter))
       .set('search', tableData.searchKey);

@@ -27,8 +27,8 @@ export class TableComponent<T> {
   categoryFilterValues = input.required<DropdownValue[]>();
   loading = input<boolean>(false);
   showPaginator = input<boolean>(false);
-  rows = input<number>(5);
-  total = input<number>(100);
+  rows = input.required<number>();
+  total = input.required<number>();
   firstRowIndex = input<number>(0);
   enableSearch = input<boolean>(false);
   enableSort = input<boolean>(false);
@@ -53,10 +53,6 @@ export class TableComponent<T> {
 
   emitCategory(event: string) {
     this.emitCategoryEvent.emit(event);
-  }
-
-  ngOnInit() {
-    // this.tableService.paginator.set(this.paginator);
   }
 
   ngAfterViewInit() {
