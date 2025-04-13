@@ -8,6 +8,7 @@
     (categoryChanged)="emitCategory($event)"
   ></app-table-header>
   <p-table
+    [lazy]="true"
     [columns]="cols()"
     [value]="data()"
     [loading]="loading()"
@@ -36,7 +37,7 @@
       let-columns="columns"
       let-rowIndex="rowIndex"
     >
-      <tr (click)="onRowSelect(rowData, $event)" style="cursor: pointer">
+      <tr (click)="onRowSelect(rowData)" style="cursor: pointer">
         @for (col of columns; track $index) {
         <td [class.align-right]="col.tableAlign === 'right'">
           <ng-container

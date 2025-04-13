@@ -12,6 +12,7 @@ import { DropdownValue } from '@app/models/inputs.model';
 import { CommonModule } from '@angular/common';
 import { Paginator, PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { TableService } from '@app/services/table.service';
+import { SortMeta } from 'primeng/api';
 
 @Component({
   selector: 'app-table',
@@ -38,6 +39,7 @@ export class TableComponent<T> {
   emitSearchKeyEvent = output<string>();
   emitCategoryEvent = output<string>();
   emitRowSelectEvent = output<T>();
+  emitSortEvent = output<SortMeta>();
 
   selectedRows: T[] = [];
 
@@ -45,11 +47,11 @@ export class TableComponent<T> {
 
   constructor(private tableService: TableService) {}
 
-  onSort(event: any) {
-    console.log(event);
+  onSort(event: SortMeta) {
+    this.emitSortEvent.emit(event);
   }
 
-  onRowSelect(rowData: T, event: any) {
+  onRowSelect(rowData: T) {
     this.emitRowSelectEvent.emit(rowData);
   }
 

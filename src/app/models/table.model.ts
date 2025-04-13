@@ -1,3 +1,4 @@
+import { SortMeta } from 'primeng/api';
 import { Paginator } from './api.model';
 
 export interface TableColumn {
@@ -11,6 +12,7 @@ export interface TableData {
   paginator: Paginator;
   filter: Record<string, string>;
   searchKey: string;
+  sort: SortMeta | Record<string, string>;
 }
 
 export enum ColumnType {

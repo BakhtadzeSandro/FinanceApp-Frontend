@@ -15,6 +15,7 @@ import { TransactionCategoryPipe } from 'src/app/pipes/transactionCategory.pipe'
 import { EMPTY, finalize, switchMap, tap } from 'rxjs';
 import { CapitalizePipe } from 'src/app/pipes/capitalize.pipe';
 import { AmountPipe } from 'src/app/pipes/amount.pipe';
+import { SortMeta } from 'primeng/api';
 
 @Component({
   selector: 'app-transactions',
@@ -49,6 +50,7 @@ export class TransactionsComponent implements OnInit {
       page: 1,
     },
     filter: {},
+    sort: {},
     searchKey: '',
   });
 
@@ -110,6 +112,14 @@ export class TransactionsComponent implements OnInit {
     this.openTransactionDialog(true, transactionData);
   }
 
+  handleSort(sortEvent: SortMeta) {
+    this.tableData.set({
+      ...this.tableData(),
+      sort: sortEvent,
+    });
+    this.getData();
+  }
+
   pageChangeHandler(event: PaginatorState) {
     if (event.page !== null && event.page !== undefined && event.rows) {
       this.tableData.set({
@@ -151,20 +161,15 @@ export class TransactionsComponent implements OnInit {
     this.loading.set(true);
     this.transactionsService
       .getTransactionsList(this.tableData())
-      .pipe(
-        tap((val) => {
-          this.firstRowIndex.set(
-            (val.paginator.page - 1) * val.paginator.limit
-          );
-          this.tableData.set({
-            ...this.tableData(),
-            paginator: val.paginator,
-          });
-          this.data.set(val.data);
-        }),
-        finalize(() => this.loading.set(false))
-      )
-      .subscribe();
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe((val) => {
+        this.firstRowIndex.set((val.paginator.page - 1) * val.paginator.limit);
+        this.tableData.set({
+          ...this.tableData(),
+          paginator: val.paginator,
+        });
+        this.data.set(val.data);
+      });
   }
 
   ngOnInit() {

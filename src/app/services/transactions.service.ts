@@ -57,7 +57,9 @@ export class TransactionsService {
       .set('page', Number(tableData.paginator.page))
       .set('limit', tableData.paginator.limit)
       .set('filter', JSON.stringify(tableData.filter))
-      .set('search', tableData.searchKey);
+      .set('search', tableData.searchKey)
+      .set('sort', JSON.stringify(tableData.sort));
+
     return this.httpClient.get<ListResponse<Transaction[]>>(
       `${environment.apiUrl}${this.endpoint}`,
       {
