@@ -24,6 +24,20 @@ export class AlertService {
     });
   }
 
+  deleteWarning() {
+    return this.callSwal({
+      title: 'Are you sure you want to delete transaction?',
+      text: 'You will not be able to revert this!',
+      icon: 'warning',
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+      allowEscapeKey: true,
+      customClass: {
+        container: 'alert',
+      },
+    });
+  }
+
   error(message: string) {
     return this.callSwal({
       icon: 'error',

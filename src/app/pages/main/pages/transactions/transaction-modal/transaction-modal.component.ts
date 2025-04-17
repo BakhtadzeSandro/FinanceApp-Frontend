@@ -55,6 +55,8 @@ export class TransactionModalComponent {
   private ref = inject(DynamicDialogRef);
   modalConfig = inject(DynamicDialogConfig<TransactionsModalConfig>);
 
+  maxDate = new Date();
+
   constructor() {}
 
   private buildForm(transaction: Transaction) {
@@ -77,7 +79,14 @@ export class TransactionModalComponent {
         transaction?.recipientOrSender,
         Validators.required
       ),
-      amount: fb.control(transaction?.amount, Validators.required),
+      amount: fb.control(
+        transaction?.amount
+          ? transaction?.amount > 0
+            ? transaction?.amount
+            : transaction?.amount * -1
+          : undefined,
+        Validators.required
+      ),
     });
     this.transactionForm.set(form);
   }

@@ -16,6 +16,7 @@ import { EMPTY, finalize, switchMap, tap } from 'rxjs';
 import { CapitalizePipe } from 'src/app/pipes/capitalize.pipe';
 import { AmountPipe } from 'src/app/pipes/amount.pipe';
 import { SortMeta } from 'primeng/api';
+import { AlertService } from '@app/services/alert.service';
 
 @Component({
   selector: 'app-transactions',
@@ -57,7 +58,8 @@ export class TransactionsComponent implements OnInit {
   constructor(
     private config: TransactionsConfig,
     private dialogService: DialogService,
-    public transactionsService: TransactionsService
+    public transactionsService: TransactionsService,
+    private alertService: AlertService
   ) {}
 
   openTransactionDialog(isEditMode: boolean, transaction?: Transaction) {
@@ -155,6 +157,16 @@ export class TransactionsComponent implements OnInit {
       },
     });
     this.getData();
+  }
+
+  handleDeletion(event: Transaction) {
+    this.alertService.deleteWarning().then((val) => {
+      if (val.isConfirmed && event._id) {
+        this.transactionsService
+          .deleteTransaction(event._id)
+          .subscribe(() => this.getData());
+      }
+    });
   }
 
   getData() {

@@ -17,3 +17,13 @@
 //   justify-content: right;
 //   margin-top: 4px;
 // }
+
+.action-buttons {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1.5rem;
+  z-index: 1000;
+}

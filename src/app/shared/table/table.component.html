@@ -18,8 +18,8 @@
     [showInitialSortBadge]="true"
     [customSort]="true"
     (onSort)="onSort($event)"
-    [(selection)]="selectedRows"
-    [selectionMode]="'multiple'"
+    [(selection)]="selectedRow"
+    selectionMode="single"
   >
     <ng-template #header let-columns>
       <tr>
@@ -37,7 +37,11 @@
       let-columns="columns"
       let-rowIndex="rowIndex"
     >
-      <tr (click)="onRowSelect(rowData)" style="cursor: pointer">
+      <tr
+        (click)="onRowSelect(rowData)"
+        style="cursor: pointer"
+        [pSelectableRow]="rowData"
+      >
         @for (col of columns; track $index) {
         <td [class.align-right]="col.tableAlign === 'right'">
           <ng-container
@@ -70,3 +74,26 @@
     #paginator
   />
 </div>
+
+@if (selectedRow()) {
+<div class="action-buttons">
+  <p-button
+    icon="pi pi-times"
+    iconPos="right"
+    (click)="clear()"
+    label="Clear"
+  />
+  <p-button
+    (click)="edit()"
+    label="Edit"
+    icon="pi pi-file-edit"
+    iconPos="right"
+  />
+  <p-button
+    (click)="delete()"
+    label="Delete"
+    icon="pi pi-trash"
+    iconPos="right"
+  />
+</div>
+}

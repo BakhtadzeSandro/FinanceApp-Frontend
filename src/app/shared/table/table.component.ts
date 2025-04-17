@@ -2,6 +2,7 @@ import {
   Component,
   input,
   output,
+  signal,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
@@ -13,10 +14,17 @@ import { CommonModule } from '@angular/common';
 import { Paginator, PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { TableService } from '@app/services/table.service';
 import { SortMeta } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-table',
-  imports: [TableModule, TableHeaderComponent, CommonModule, PaginatorModule],
+  imports: [
+    TableModule,
+    TableHeaderComponent,
+    CommonModule,
+    PaginatorModule,
+    ButtonModule,
+  ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
   standalone: true,
@@ -30,6 +38,7 @@ export class TableComponent<T> {
   rows = input.required<number>();
   total = input.required<number>();
   firstRowIndex = input<number>(0);
+  enableEditing = input<boolean>(true);
   enableSearch = input<boolean>(false);
   enableSort = input<boolean>(false);
   enableFilter = input<boolean>(false);
@@ -40,19 +49,34 @@ export class TableComponent<T> {
   emitCategoryEvent = output<string>();
   emitRowSelectEvent = output<T>();
   emitSortEvent = output<SortMeta>();
+  emitDeleteEvent = output<T>();
 
-  selectedRows: T[] = [];
+  selectedRow = signal<T | undefined>(undefined);
 
   @ViewChild('paginator') paginator: Paginator | undefined;
 
   constructor(private tableService: TableService) {}
+
+  edit() {
+    this.emitRowSelectEvent.emit(this.selectedRow()!);
+    this.selectedRow.set(undefined);
+  }
+
+  delete() {
+    this.emitDeleteEvent.emit(this.selectedRow()!);
+    this.selectedRow.set(undefined);
+  }
+
+  clear() {
+    this.selectedRow.set(undefined);
+  }
 
   onSort(event: SortMeta) {
     this.emitSortEvent.emit(event);
   }
 
   onRowSelect(rowData: T) {
-    this.emitRowSelectEvent.emit(rowData);
+    this.selectedRow.set(rowData);
   }
 
   onPageChange(event: PaginatorState) {

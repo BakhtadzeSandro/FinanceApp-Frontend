@@ -50,6 +50,14 @@ export class TransactionsService {
     );
   }
 
+  deleteTransaction(
+    transactionId: string
+  ): Observable<ListResponse<Transaction[]>> {
+    return this.httpClient.delete<ListResponse<Transaction[]>>(
+      `${environment.apiUrl}${this.endpoint}/${transactionId}`
+    );
+  }
+
   getTransactionsList(
     tableData: TableData
   ): Observable<ListResponse<Transaction[]>> {
