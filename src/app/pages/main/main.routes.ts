@@ -25,6 +25,13 @@ export const mainRoutes: Route[] = [
             (m) => m.TransactionsComponent
           ),
       },
+      {
+        path: 'budgets',
+        loadComponent: () =>
+          import('./pages/budgets/budgets.component').then(
+            (m) => m.BudgetsComponent
+          ),
+      },
     ],
   },
 ];

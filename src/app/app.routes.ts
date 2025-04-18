@@ -5,13 +5,13 @@ import { anonymGuard } from './guards/anonym.guard';
 export const routes: Routes = [
   {
     path: 'auth',
-    // canDeactivate: [anonymGuard],
+    canActivate: [anonymGuard],
     loadChildren: () =>
       import('./pages/auth/auth.routes').then((m) => m.authRoutes),
   },
   {
     path: '',
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./pages/main/main.routes').then((m) => m.mainRoutes),
   },
