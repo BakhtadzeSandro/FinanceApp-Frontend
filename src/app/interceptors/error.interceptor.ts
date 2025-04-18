@@ -18,14 +18,14 @@ export function ErrorInterceptor(
 
   return next(request).pipe(
     catchError((err: HttpErrorResponse) => {
+      console.log(err);
       if (err.status === 401 && err.error?.message === 'Unauthorized') {
         localStorage.removeItem('token');
         alertService
           .error('Session expired. Please log in again.')
           .then(() => router.navigate(['/auth']));
-      } else if (err.error?.message) {
-        alertService.error(err.error.message);
       }
+      alertService.error(err.error.message);
 
       return throwError(() => err);
     })
